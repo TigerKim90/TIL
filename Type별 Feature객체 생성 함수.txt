@@ -1,0 +1,29 @@
+############ Tensorflow에서 제공된 Type별 Feature 생성 코드 ############
+
+def _bytes_feature(value):
+    # string / byte 타입을 받아서 byte list를 리턴.
+    if isinstance(value, type(tf.constant(0))):
+        value = value.numpy() # BytesList won't unpack a string from an EagerTensor.
+    return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
+
+def _float_feature(value):
+    # float / double 타입을 받아서 float list를 리턴
+    return tf.train.Feature(float_list=tf.train.FloatList(value=[value]))
+
+def _floatarray_feature(array):
+    """Returns a float_list from a float / double."""
+    return tf.train.Feature(float_list=tf.train.FloatList(value=array))
+
+def _int64_feature(value):
+    # bool / enum / int / uint 타입을 받아서 int64 list를 리턴
+    return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
+
+
+def _validate_text(text):
+    """If text is not str or unicode, then try to convert it to str."""
+    if isinstance(text, str):
+        return text
+    elif isinstance(text, 'unicode'):
+        return text.encode('utf8', 'ignore')
+    else:
+        return str(text)

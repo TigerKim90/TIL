@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>{{ selected_question.question_text }}</h1>
+    {% if error_message %}
+    <div>{{ error_message }}</div>
+    {% endif %}
+
+    <form action="{% url 'polls:vote' selected_question.id %}"
+          method="POST">
+    {% csrf_token %}
+        {% for choice in selected_question.choice_set.all %}
+        <input type="radio"
+               name="my_choice"
+               id="kaka{{ forloop.counter }}"
+               value="{{ choice.id }}">
+        <label for="kaka{{ forloop.counter }}">
+        {{ choice.choice_text }}
+        </label><br>
+        {% endfor %}
+        <br>
+        <input type="submit" value="투표!!">
+    </form>
+</body>
+</html>
